@@ -15,14 +15,6 @@ void	my_putchar(char c)
 	write(1, &c, 1);
 }
 
-void	my_putstr(char *str)
-{
-	int	x;
-
-	x = my_strlen(str);
-	write(1, str, x);
-}
-
 int	base_is_valid(char *base)
 {
 	int	l;
@@ -47,6 +39,39 @@ int	base_is_valid(char *base)
 	return (1);
 }
 
+int	is_a_space(char c)
+{
+	if(c == ' ' || c == '\t' || c == '\n')
+		return (1);
+	return (0);
+}
+
+int	my_atoi(char *str)
+{
+	int	i;
+	int	s;
+	int	x;
+
+	i = 0;
+	s = 1;
+	x = 0;
+	while(is_a_space(str[i]))
+		i++;
+	if(str[i] == '-' || str[i] == '+')
+	{
+		if(str[i] = '-')
+			s = -1;
+		i++;
+	}
+	while(str[i] >= '0' && str[i] <= '9')
+	{
+		x = x * 10 + (str[i] - 48);
+		i++;
+	}
+	x *= s;
+	return (x);
+}
+
 void	putnbr_base(int x, char *base)
 {
 	int	b;
@@ -63,10 +88,10 @@ void	putnbr_base(int x, char *base)
 	}
 	if(x < 0)
 	{
-		my_putstr("-");
+		my_putchar('-');
 		x *= -1;
 	}
-	if(x < 9)
+	if(x < b)
 	{
 		my_putchar(base[x % b]);
 		return ;
@@ -75,8 +100,14 @@ void	putnbr_base(int x, char *base)
 	my_putchar(base[x % b]);
 }
 
-int	main(void)
+int	main(int argc, char *argv[])
 {
-	putnbr_base(-2147483647, "0123456789abcdef");
+	int	num;
+
+	if(argc == 3)
+	{
+		num = my_atoi(argv[1]);
+		putnbr_base(num, argv[2]);
+	}
 	return (0);
 }
